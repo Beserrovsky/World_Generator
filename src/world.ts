@@ -4,28 +4,35 @@ export class World {
 
     private map : items.Item[][];
 
-    constructor(public name: string, private map_size: number, private base_item: any){
-        this.map = Array(this.map_size);
+    constructor(public name: string, private map_width: number, private map_height, private base_item: items.Item){
+        this.map = Array(this.map_width);
         this.createWorld();
     }
 
     private createWorld(){
-        for(let i = 0; i < this.map_size; i++){
-            this.map[i] = new Array(this.map_size).fill(new this.base_item);
+        for(let i = 0; i < this.map_width; i++){
+            this.map[i] = new Array(this.map_height).fill(this.base_item);
         }
     }
 
     public show(): void{
         let map_str: string = "";
 
-        for(let i = 0; i < this.map_size; i++){
-            for(let is = 0; is < this.map_size; is++){
+        for(let i = 0; i < this.map_width; i++){
+            for(let is = 0; is < this.map_height; is++){
                 map_str+= ' '+ this.map[i][is].char; 
             }
             map_str+= '\n';
         }
+        console.log(`${this.name}:\n${map_str}\n`);
+    }
 
-        console.log(`${this.name} está mais ou menos assim:\n${map_str}`);
+    public drawn(item: items.Item, x: number, y: number){
+        if(x < this.map_width && y < this.map_height){
+            this.map[x][y] = item;
+        }else{
+            console.log(`Erro em cordenadas passadas para desenhar um ${item.name} em ${x}:${y}`);
+        }
     }
 
 }
