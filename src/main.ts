@@ -12,7 +12,7 @@ function logWorlds(): void{
 
 worlds.push(new World('Lua', 2, 2 , new items.Ground));
 
-worlds.push(new World('Terra', 10, 10, new items.Ground));
+worlds.push(new World('Terra', 5, 5, new items.Ground));
 
 logWorlds();
 
