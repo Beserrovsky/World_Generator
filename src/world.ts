@@ -6,11 +6,11 @@ export class World {
 
     private base_terrain : typeof terrains.Terrain;
 
-    constructor(public name: string, private map_width: number, private map_height: number, base_terrain: typeof terrains.Terrain | null = null){
+    constructor(public name: string, private map_width: number, private map_height: number, private flags: string[] = ['base'] , base_terrain: typeof terrains.Terrain | null = null){
         this.map = Array(this.map_height);
 
-        if(base_terrain===null){
-            base_terrain = this.getRandomTerrain(['base']);
+        if(base_terrain === null || base_terrain === terrains.Terrain){ // IF NOT BASE TERRAIN CALLED
+            base_terrain = this.getRandomTerrain();
         }
 
         this.base_terrain = base_terrain;
@@ -18,19 +18,27 @@ export class World {
         this.createWorld();
     }
 
-    private getRandomTerrain(flags : string[]): typeof terrains.Terrain{
+    private getRandomTerrain(): typeof terrains.Terrain{
 
         let available_terrains: typeof terrains.Terrain[] = [];
 
         let selected_terrain: typeof terrains.Terrain;
 
-        if(flags.length > 0){
-            flags.forEach(flag_name => {
+        if(this.flags.length > 0){
+
+            //IMPORTANT FLAGS FOR GETTING TERRAIN
+            
+            if(this.flags.some(flag=>{ return (flag === 'water') })){
+                return terrains.Water;
+            }
+
+            //ADDABLE FLAGS FOR GETTING TERRAIN
+            this.flags.forEach(flag_name => {
                 switch (flag_name){
                     case 'base':
                         base_terrains.forEach(terrain =>{
                             available_terrains.push(terrain);
-                        }); // PERFORMACE ISSUE, CHANGE TO COMBINE AFTER
+                        });
                     break;
                 }
             });
@@ -42,7 +50,8 @@ export class World {
     }
 
     private createWorld(){
-        console.log(this.base_terrain);
+        console.log(`${this.name} flags are: ${this.flags}`);
+        console.log(`${this.name} base terrain is: ${this.base_terrain}`);
         for(let i = 0; i < this.map_height; i++){
             this.map[i] = new Array(this.map_width).fill(new this.base_terrain);
         }
