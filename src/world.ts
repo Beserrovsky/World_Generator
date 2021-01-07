@@ -7,8 +7,6 @@ export class World {
     private base_terrain : typeof terrains.Terrain;
 
     constructor(public name: string, private map_width: number, private map_height: number, private flags: string[] = ['base'] , base_terrain: typeof terrains.Terrain | null = null){
-        this.map = Array(this.map_height);
-
         if(base_terrain === null || base_terrain === terrains.Terrain){ // IF NOT BASE TERRAIN CALLED
             base_terrain = this.getRandomTerrain();
         }
@@ -52,26 +50,37 @@ export class World {
     private createWorld(){
         console.log(`${this.name} flags are: ${this.flags}`);
         console.log(`${this.name} base terrain is: ${this.base_terrain}`);
-        for(let i = 0; i < this.map_height; i++){
-            this.map[i] = new Array(this.map_width).fill(new this.base_terrain);
+
+        this.map = new Array(this.map_width);
+
+        for(let x = 0; x < this.map_width; x++){
+
+            this.map[x] = new Array(this.map_height);
+
+            for(let y = 0; y < this.map_height; y++){
+
+                this.drawn(x, y, this.base_terrain);
+            }
         }
     }
 
     public show(): void{
         let map_str: string = "";
 
-        for(let i = 0; i < this.map_height; i++){
-            for(let is = 0; is < this.map_width; is++){
-                map_str+= ' '+ this.map[i][is].char; 
+        for(let x = 0; x < this.map_width; x++){
+            for(let y = 0; y < this.map_height; y++){
+
+                map_str+= ' '+ this.map[x][y].char; 
+
             }
             map_str+= '\n';
         }
         console.log(`${this.name}:\n${map_str}\n`);
     }
 
-    public drawn(terrain: terrains.Terrain, x: number, y: number){
+    public drawn(x: number, y: number, terrain: typeof terrains.Terrain){
         if(x < this.map_width && y < this.map_height){
-            this.map[x][y] = terrain;
+            this.map[x][y] = new terrain;
         }else{
             console.log(`Erro em cordenadas passadas para desenhar um ${terrain.name} em ${x}:${y}`);
         }
