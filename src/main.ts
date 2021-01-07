@@ -1,5 +1,5 @@
 import { World } from './world';
-import { items } from './items';
+import { terrains } from './terrains';
 
 let worlds: World[] = [];
 
@@ -10,16 +10,12 @@ function logWorlds(): void{
     }
 }
 
-worlds.push(new World('Lua', 2, 2 , new items.Ground));
+worlds.push(new World('Lua', 2, 2 , terrains.Moon_Stone));
 
-worlds.push(new World('Terra', 5, 5, new items.Ground));
+worlds.push(new World('Terra', 5, 5));
+
+worlds.push(new World('Felps', 2, 3, terrains.Void));
+
+worlds.push(new World('Grama', 5, 5));
 
 logWorlds();
-
-setTimeout(()=>{
-    worlds[0].drawn(new items.Moon_Stone, 0, 0);
-    worlds[0].drawn(new items.Moon_Stone, 0, 1);
-    worlds[0].drawn(new items.Moon_Stone, 1, 0);
-    worlds[0].drawn(new items.Moon_Stone, 1, 1);
-    logWorlds();
-},2000);
